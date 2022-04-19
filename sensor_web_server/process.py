@@ -9,27 +9,27 @@ from flask import *
 network_list = {}
 display_table = {}
 
-def get_table():
-    now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
-    network_list["TIME"] = current_time
+# def get_table():
+#     now = datetime.now()
+#     current_time = now.strftime("%H:%M:%S")
+#     network_list["TIME"] = current_time
 
-    result = subprocess.Popen(["sudo","iwlist","wlan0","scan"],stdout=subprocess.PIPE, universal_newlines=True)
-    output, error = result.communicate()
+#     result = subprocess.Popen(["sudo","iwlist","wlan0","scan"],stdout=subprocess.PIPE, universal_newlines=True)
+#     output, error = result.communicate()
 
-    for line in output.split("\n"):
+#     for line in output.split("\n"):
 
-        if re.search('Signal',line):
-            signal = re.search('Signal level=(.*) dBm',line)
-            signal_level = []
-            signal_level = signal.group(1)
+#         if re.search('Signal',line):
+#             signal = re.search('Signal level=(.*) dBm',line)
+#             signal_level = []
+#             signal_level = signal.group(1)
         
-        if re.search('ESSID',line):
-            essid = re.search('ESSID:"(.*)"',line)
-            network_list[essid.group(1)] = signal_level
-            # print(essid.group(1))
+#         if re.search('ESSID',line):
+#             essid = re.search('ESSID:"(.*)"',line)
+#             network_list[essid.group(1)] = signal_level
+#             # print(essid.group(1))
 
-    return network_list
+#     return network_list
 
 app = Flask(__name__)
 

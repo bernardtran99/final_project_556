@@ -1,5 +1,3 @@
-
-#Wireless Network Mapper
 #Bernard Tran
 
 import sys

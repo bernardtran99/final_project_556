@@ -35,8 +35,9 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    display_table = get_table()
-    return render_template('table.html', display_table=display_table)
+    # display_table = get_table()
+    # return render_template('table.html', display_table=display_table)
+    return render_template('table.html')
 
 if __name__ == "__main__":
     app.run("0.0.0.0")

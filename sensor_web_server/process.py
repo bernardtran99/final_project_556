@@ -3,10 +3,11 @@ import time
 import subprocess
 import os
 import re
+import json
 from datetime import datetime
 from flask import *
-import json
-from flask_socketio import SocketIO
+
+# from flask_socketio import SocketIO
 
 app = Flask(__name__)
 

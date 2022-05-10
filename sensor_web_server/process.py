@@ -18,7 +18,14 @@ last_ring = 0
 last_prox = 0
 is_open = False
 last_unlock = 0
+
+ring_ago = 0
+prox_ago = 0
+unlock_ago = 0
 app = Flask(__name__)
+
+GPIO_TRIGGER = 37
+GPIO_ECHO = 33
 
 def get_last_ring():
     global last_ring
@@ -73,14 +80,35 @@ def sense_thread():
     GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
     GPIO.add_event_detect(40, GPIO.RISING, callback = prox_callback, bouncetime = 300)
 
-# def prox_thread():
-#     global last_prox
-#     global is_open
-#     # update sense info here
-#     GPIO.setwarnings(False)
-#     GPIO.setmode(GPIO.BOARD)
-#     GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-#     GPIO.add_event_detect(40, GPIO.RISING, callback = prox_callback, bouncetime = 300)
+def distance():
+    GPIO.output(GPIO_TRIGGER, True)
+ 
+    time.sleep(0.00001)
+    GPIO.output(GPIO_TRIGGER, False)
+ 
+    StartTime = time.time()
+    StopTime = time.time()
+ 
+    while GPIO.input(GPIO_ECHO) == 0:
+        StartTime = time.time()
+ 
+    while GPIO.input(GPIO_ECHO) == 1:
+        StopTime = time.time()
+
+    TimeElapsed = StopTime - StartTime
+    distance = (TimeElapsed * 34300) / 2
+ 
+    return distance
+
+def dist_thread():
+    #set GPIO direction (IN / OUT)
+    GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
+    GPIO.setup(GPIO_ECHO, GPIO.IN)
+
+    while True:
+        dist = distance()
+        print ("Measured Distance = %.1f cm" % dist)
+        time.sleep(1)
 
 @app.route("/", methods = ['GET', 'POST'])
 def index():
@@ -101,7 +129,7 @@ def index():
 if __name__ == "__main__":
     t_main = threading.Thread(target = main_thread)
     t_sense = threading.Thread(target = sense_thread)
-    # t_prox = threading.Thread(target = prox_thread)
+    t_dist = threading.Thread(target = dist_thread)
     t_main.start()
     t_sense.start()
-    # t_prox.start()
+    t_dist.start()

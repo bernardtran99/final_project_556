@@ -9,6 +9,12 @@ body {
 	background-color: #282923;
 }
 
+#borderHead
+{
+	background-color: orange;
+	height: 4px;
+}
+
 #content {
 	color: white;
 	background-color: #333333;

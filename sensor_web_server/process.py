@@ -18,6 +18,7 @@ last_ring = 0
 last_prox = 0
 is_open = False
 last_unlock = 0
+open_num = 100
 
 ring_ago = 0
 prox_ago = 0
@@ -50,6 +51,7 @@ def push_callback(channel):
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
     last_ring = current_time
+    # send email
 
 def prox_callback(channel):
     global last_prox
@@ -65,7 +67,7 @@ def unlock_door():
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
     last_unlock = current_time
-    # put servo code here
+    # move servo
 
 def main_thread():
     global app
@@ -101,13 +103,51 @@ def distance():
     return distance
 
 def dist_thread():
-    #set GPIO direction (IN / OUT)
+    global is_open
+    prev_num = 100
+    open_before = False
+    open_current = False
     GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
     GPIO.setup(GPIO_ECHO, GPIO.IN)
 
     while True:
         dist = distance()
         print ("Measured Distance = %.1f cm" % dist)
+
+        if dist <= 5:
+            if open_current == False and open_before == False:
+                is_open = "Yes"
+                open_current = True
+            if open_current == True and open_before == True:
+                is_open = "No"
+                open_current = False
+        if dist > 5:
+            if open_current == True:
+                is_open = "Yes"
+                open_before = True
+            if open_current == False:
+                is_open = "No"
+                open_before = False
+        # 3 states: door closed sensor = inf, door open sensor = inf, door open sensor < 5
+        # if dist > 5 and prev_num > 5:
+        #     # Door still close or still open"
+        #     if open_before == False:
+        #         #still closed
+        #         is_open = "No"
+        #     if open_current == True:
+        #         #still open
+        #         is_open = "Yes"
+        # if dist < 5 and prev_num > 5:
+        #     # "Door currently being opened or closed")
+        #     if open_before == False:
+        #         #currently being opened
+        #         is_open = "Being Opened"
+        #     if open_current == True:
+        #         #currently being closed
+        #         is_open = "Being Closed"
+        # if dist < 5 and prev_num < 5:
+        #     # print("Door currently blocking sensor fully")
+        #     if open_before == False:
         time.sleep(1)
 
 @app.route("/", methods = ['GET', 'POST'])

@@ -35,6 +35,14 @@ def get_unlock():
     global last_unlock
     return last_unlock
 
+def push_callback(channel):
+    global last_ring
+    print("Update Ring")
+    time.sleep(0.1)
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    last_ring = current_time
+
 def prox_callback(channel):
     global last_prox
     print("Update Prox")
@@ -62,7 +70,9 @@ def sense_thread():
     # update sense info here
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(25, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
     GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+    GPIO.add_event_detect(25, GPIO.RISING, callback = push_callback, bouncetime = 300)
     GPIO.add_event_detect(40, GPIO.RISING, callback = prox_callback, bouncetime = 300)
 
 @app.route("/", methods = ['GET', 'POST'])

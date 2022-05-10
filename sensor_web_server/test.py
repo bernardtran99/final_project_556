@@ -5,7 +5,7 @@ x = 0
 
 def button_callback(channel):
     global x
-    time.sleep(0.01)
+    time.sleep(0.1)
     x += 1
     print(x)
 

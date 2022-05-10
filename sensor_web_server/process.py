@@ -69,7 +69,6 @@ def push_thread():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
     GPIO.add_event_detect(29, GPIO.RISING, callback = push_callback, bouncetime = 300)
-    GPIO.cleanup()
 
 def prox_thread():
     global last_prox
@@ -79,7 +78,6 @@ def prox_thread():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
     GPIO.add_event_detect(40, GPIO.RISING, callback = prox_callback, bouncetime = 300)
-    GPIO.cleanup()
 
 @app.route("/", methods = ['GET', 'POST'])
 def index():
@@ -100,7 +98,7 @@ def index():
 if __name__ == "__main__":
     t_main = threading.Thread(target = main_thread)
     t_push = threading.Thread(target = push_thread)
-    t_prox = threading.Thread(target = prox_thread)
+    # t_prox = threading.Thread(target = prox_thread)
     t_main.start()
     t_push.start()
-    t_prox.start()
+    # t_prox.start()

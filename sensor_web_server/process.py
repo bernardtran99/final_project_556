@@ -63,7 +63,7 @@ def main_thread():
     global app
     app.run("0.0.0.0")
 
-def push_thread():
+def sense_thread():
     global last_ring
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
@@ -72,14 +72,14 @@ def push_thread():
     GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
     GPIO.add_event_detect(40, GPIO.RISING, callback = prox_callback, bouncetime = 300)
 
-def prox_thread():
-    global last_prox
-    global is_open
-    # update sense info here
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-    GPIO.add_event_detect(40, GPIO.RISING, callback = prox_callback, bouncetime = 300)
+# def prox_thread():
+#     global last_prox
+#     global is_open
+#     # update sense info here
+#     GPIO.setwarnings(False)
+#     GPIO.setmode(GPIO.BOARD)
+#     GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+#     GPIO.add_event_detect(40, GPIO.RISING, callback = prox_callback, bouncetime = 300)
 
 @app.route("/", methods = ['GET', 'POST'])
 def index():
@@ -99,8 +99,8 @@ def index():
 
 if __name__ == "__main__":
     t_main = threading.Thread(target = main_thread)
-    t_push = threading.Thread(target = push_thread)
+    t_sense = threading.Thread(target = sense_thread)
     # t_prox = threading.Thread(target = prox_thread)
     t_main.start()
-    t_push.start()
+    t_sense.start()
     # t_prox.start()

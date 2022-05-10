@@ -35,8 +35,9 @@ def get_unlock():
     global last_unlock
     return last_unlock
 
-def prox_callback():
+def prox_callback(channel):
     global last_prox
+    print("Update Prox")
     time.sleep(0.1)
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")

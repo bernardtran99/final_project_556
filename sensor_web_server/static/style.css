@@ -1,5 +1,15 @@
 body {
 	text-align: center;
 	font-family: 'Roboto', sans-serif;
-	font-size: 36;
+}
+
+#header {
+	color: white;
+	background-color: #282923;
+}
+
+#content {
+	color: white;
+	background-color: #333333;
+	font-size: 30px;
 }

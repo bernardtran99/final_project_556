@@ -70,9 +70,9 @@ def sense_thread():
     # update sense info here
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(25, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+    GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
     GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-    GPIO.add_event_detect(25, GPIO.RISING, callback = push_callback, bouncetime = 300)
+    GPIO.add_event_detect(29, GPIO.RISING, callback = push_callback, bouncetime = 300)
     GPIO.add_event_detect(40, GPIO.RISING, callback = prox_callback, bouncetime = 300)
     GPIO.cleanup()
 

@@ -43,6 +43,9 @@ def get_unlock():
     global last_unlock
     return last_unlock
 
+def send_email():
+    print("Sending Email...")
+
 def push_callback(channel):
     global last_ring
     print("Update Ring")
@@ -112,7 +115,6 @@ def dist_thread():
     while True:
         dist = distance()
         print ("Measured Distance = %.1f cm" % dist)
-
         if dist <= 5:
             if open_current == False and open_before == False:
                 is_open = "Yes"
@@ -127,26 +129,6 @@ def dist_thread():
             if open_current == False:
                 is_open = "No"
                 open_before = False
-        # 3 states: door closed sensor = inf, door open sensor = inf, door open sensor < 5
-        # if dist > 5 and prev_num > 5:
-        #     # Door still close or still open"
-        #     if open_before == False:
-        #         #still closed
-        #         is_open = "No"
-        #     if open_current == True:
-        #         #still open
-        #         is_open = "Yes"
-        # if dist < 5 and prev_num > 5:
-        #     # "Door currently being opened or closed")
-        #     if open_before == False:
-        #         #currently being opened
-        #         is_open = "Being Opened"
-        #     if open_current == True:
-        #         #currently being closed
-        #         is_open = "Being Closed"
-        # if dist < 5 and prev_num < 5:
-        #     # print("Door currently blocking sensor fully")
-        #     if open_before == False:
         time.sleep(1)
 
 @app.route("/", methods = ['GET', 'POST'])

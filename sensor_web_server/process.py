@@ -74,6 +74,7 @@ def sense_thread():
     GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
     GPIO.add_event_detect(25, GPIO.RISING, callback = push_callback, bouncetime = 300)
     GPIO.add_event_detect(40, GPIO.RISING, callback = prox_callback, bouncetime = 300)
+    GPIO.cleanup()
 
 @app.route("/", methods = ['GET', 'POST'])
 def index():

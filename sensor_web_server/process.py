@@ -56,6 +56,11 @@ def index():
     if request.method == 'POST':
         if request.form.get('unlock') == 'TRUE':
             unlock_door()
+            current_ring = get_last_ring()
+            current_prox = get_last_prox()
+            current_state = get_state()
+            current_lock = get_unlock()
+            return redirect(url_for("/"))
     current_ring = get_last_ring()
     current_prox = get_last_prox()
     current_state = get_state()

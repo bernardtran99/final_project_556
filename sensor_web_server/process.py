@@ -16,9 +16,8 @@ from flask_socketio import SocketIO
 
 last_ring = 0
 last_prox = 0
-is_open = False
+is_open = "No"
 last_unlock = 0
-open_num = 100
 
 ring_ago = 0
 prox_ago = 0

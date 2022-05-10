@@ -17,14 +17,22 @@
     </div>
     <div id="borderHead"></div>
     <div id="content">
-      Last Proximity Alarm: {{ current_prox }} ({{ 0 }} seconds ago)
+      Last Proximity Alarm: {{ current_prox }}
+      <br>
+      Last Doorbell Ring: {{ current_ring }}
+      <br>
+      Is Door Open? {{ current_state }}
+      <br>
+      Last Door Unlock: {{ current_lock }}
+      <br>
+      <!-- Last Proximity Alarm: {{ current_prox }} ({{ 0 }} seconds ago)
       <br>
       Last Doorbell Ring: {{ current_ring }} ({{ 0 }} seconds ago)
       <br>
       Is Door Open? {{ current_state }}
       <br>
       Last Door Unlock: {{ current_lock }} ({{ 0 }} seconds ago)
-      <br>
+      <br> -->
       <form method="post" action="/">
         <input id="button" type="submit" value="Unlock Door" name="unlock"/>
       </form>

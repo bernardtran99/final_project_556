@@ -19,15 +19,6 @@ is_open = False
 last_unlock = 0
 app = Flask(__name__)
 
-def main_thread():
-    global app
-    app.run("0.0.0.0")
-
-def sense_thread():
-    global last_ring
-    global last_prox
-    global is_open
-
 def get_last_ring():
     global last_ring
     return last_ring
@@ -44,17 +35,39 @@ def get_unlock():
     global last_unlock
     return last_unlock
 
+def prox_callback():
+    global last_prox
+    time.sleep(0.1)
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    last_prox = current_time
+
 def unlock_door():
     global last_unlock
     print("Unlocking Door")
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
     last_unlock = current_time
+    # put servo code here
+
+def main_thread():
+    global app
+    app.run("0.0.0.0")
+
+def sense_thread():
+    global last_ring
+    global last_prox
+    global is_open
+    # update sense info here
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+    GPIO.add_event_detect(40, GPIO.RISING, callback = prox_callback, bouncetime = 300)
 
 @app.route("/", methods = ['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        if request.form.get('unlock') == 'TRUE':
+        if request.form.get('unlock') == 'Unlock Door':
             unlock_door()
             current_ring = get_last_ring()
             current_prox = get_last_prox()

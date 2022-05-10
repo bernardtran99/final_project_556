@@ -60,7 +60,7 @@ def index():
             current_prox = get_last_prox()
             current_state = get_state()
             current_lock = get_unlock()
-            return redirect(url_for("/"))
+            return redirect(url_for("index"))
     current_ring = get_last_ring()
     current_prox = get_last_prox()
     current_state = get_state()

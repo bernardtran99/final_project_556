@@ -63,16 +63,21 @@ def main_thread():
     global app
     app.run("0.0.0.0")
 
-def sense_thread():
+def push_thread():
     global last_ring
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+    GPIO.add_event_detect(29, GPIO.RISING, callback = push_callback, bouncetime = 300)
+    GPIO.cleanup()
+
+def prox_thread():
     global last_prox
     global is_open
     # update sense info here
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
     GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-    GPIO.add_event_detect(29, GPIO.RISING, callback = push_callback, bouncetime = 300)
     GPIO.add_event_detect(40, GPIO.RISING, callback = prox_callback, bouncetime = 300)
     GPIO.cleanup()
 
@@ -94,6 +99,8 @@ def index():
 
 if __name__ == "__main__":
     t_main = threading.Thread(target = main_thread)
-    t_sense = threading.Thread(target = sense_thread)
+    t_push = threading.Thread(target = push_thread)
+    t_prox = threading.Thread(target = prox_thread)
     t_main.start()
-    t_sense.start()
+    t_push.start()
+    t_prox.start()
